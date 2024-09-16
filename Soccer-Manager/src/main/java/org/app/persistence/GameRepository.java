@@ -106,6 +106,21 @@ public class GameRepository implements Repository<GameModel>{
         }
     }
 
+    public List<GameModel> findGamesWithDate(Date initialDate, Date finalDate){
+        List<GameModel> games = new ArrayList<>();
+        try(PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM game WHERE date BETWEEN ? AND ? ")){
+            statement.setDate(1, initialDate);
+            statement.setDate(2, finalDate);
+            try (ResultSet resultSet = statement.executeQuery()){
+                while(resultSet.next()){
+                    games.add(createGame(resultSet));
+                }
+            }
+            return games;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     private GameModel createGame(ResultSet resultSet) throws SQLException {
         GameModel g = new GameModel();
         g.setId(resultSet.getInt("id"));
