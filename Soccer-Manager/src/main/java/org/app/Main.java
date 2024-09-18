@@ -6,6 +6,8 @@ import org.app.persistence.GameRepository;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 import java.util.Vector;
 
@@ -81,7 +83,7 @@ public class Main {
         DefaultTableModel tableModel = new DefaultTableModel();
         JTable gamesTable = new JTable(tableModel);
 
-        String[] columns = {"id", "Fecha", "Equipo visitante", "Equipo local", "Torneo", "Goles visitante", "Goles local", "Ganador"};
+        String[] columns = {"id", "Fecha","Hora del juego", "Equipo visitante", "Equipo local", "Torneo", "Goles visitante", "Goles local", "Ganador"};
         tableModel.setColumnIdentifiers(columns);
 
         // Adding the table inside a scroll pane
@@ -113,6 +115,7 @@ public class Main {
                 Vector<Object> row = new Vector<>();
                 row.add(game.getId());
                 row.add(game.getDate());
+                row.add(game.getTime());
                 row.add(game.getVisitTeam());
                 row.add(game.getLocalTeam());
                 row.add(game.getTournament());
@@ -127,10 +130,62 @@ public class Main {
             }
         });
 
-        // Adding actions for add, edit, and delete buttons (to be implemented)
         addButton.addActionListener(e -> {
-            // Logic to add a new game
-            JOptionPane.showMessageDialog(frameMain, "Agregar un nuevo juego");
+            JPanel addPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+
+            addPanel.add(new JLabel("Fecha: (YYYY-MM-DD)"));
+            JTextField dateInput = new JTextField();
+            addPanel.add(dateInput);
+
+            addPanel.add(new JLabel("Horario: (HH:MM:SS)"));
+            JTextField timeInput = new JTextField();
+            addPanel.add(timeInput);
+
+            addPanel.add(new JLabel("Equipo visitante:"));
+            JTextField visitTeamInput = new JTextField();
+            addPanel.add(visitTeamInput);
+
+            addPanel.add(new JLabel("Equipo local:"));
+            JTextField localTeamInput = new JTextField();
+            addPanel.add(localTeamInput);
+
+            addPanel.add(new JLabel("Torneo:"));
+            JTextField tournamentInput = new JTextField();
+            addPanel.add(tournamentInput);
+
+            int result = JOptionPane.showConfirmDialog(null, addPanel,
+                    "Agregar Nuevo Juego", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (result == JOptionPane.OK_OPTION) {
+                try {
+                    Date date = Date.valueOf(dateInput.getText());
+
+                    String timeString = timeInput.getText();
+                    if (!timeString.matches("\\d{2}:\\d{2}:\\d{2}")) {
+                        throw new IllegalArgumentException("El formato de hora debe ser HH:mm:ss");
+                    }
+                    Time time = Time.valueOf(timeString);
+
+                    int visitTeam = Integer.parseInt(visitTeamInput.getText());
+                    int localTeam = Integer.parseInt(localTeamInput.getText());
+                    String tournament = tournamentInput.getText();
+
+                    GameModel newGame = new GameModel();
+                    newGame.setDate(date);
+                    newGame.setTime(time);
+                    newGame.setVisitTeam(visitTeam);
+                    newGame.setLocalTeam(localTeam);
+                    newGame.setTournament(tournament);
+
+                    gameRepository.save(newGame);
+                    String text = "Nuevo juego agregado el día: " + date + " a las " + time + " ";
+                    JOptionPane.showMessageDialog(null, text);
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Formato incorrecto", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(null, "Error al agregar el juego. Verifica los datos ingresados.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
 
         editButton.addActionListener(e -> {
