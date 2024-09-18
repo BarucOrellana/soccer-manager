@@ -43,17 +43,18 @@ public class GameRepository implements Repository<GameModel>{
 
     @Override
     public void save(GameModel gameModel) {
-        try(PreparedStatement statement = getConnection().prepareStatement("INSERT INTO game(date, visit_team_id, " +
+        try(PreparedStatement statement = getConnection().prepareStatement("INSERT INTO game(date, time, visit_team_id, " +
                 "local_team_id, tournament, " +
                 "goals_visit_team, goals_local_team, winner) " +
-                "VALUES(?,?,?,?,?,?,?)")){
+                "VALUES(?,?,?,?,?,?,?,?)")){
             statement.setDate(1,gameModel.getDate());
-            statement.setInt(2,gameModel.getVisitTeam());
-            statement.setInt(3, gameModel.getLocalTeam());
-            statement.setString(4,gameModel.getTournament());
-            statement.setInt(5,gameModel.getGoalsVisitTeam());
-            statement.setInt(6, gameModel.getGoalsLocalTeam());
-            statement.setString(7, gameModel.getWinner());
+            statement.setTime(2, gameModel.getTime());
+            statement.setInt(3,gameModel.getVisitTeam());
+            statement.setInt(4, gameModel.getLocalTeam());
+            statement.setString(5,gameModel.getTournament());
+            statement.setInt(6,gameModel.getGoalsVisitTeam());
+            statement.setInt(7, gameModel.getGoalsLocalTeam());
+            statement.setString(8, gameModel.getWinner());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -62,15 +63,16 @@ public class GameRepository implements Repository<GameModel>{
 
     @Override
     public void update(GameModel gameModel) {
-        try(PreparedStatement statement = getConnection().prepareStatement("UPDATE game SET date = ?, " +
+        try(PreparedStatement statement = getConnection().prepareStatement("UPDATE game SET date = ?, time = ?,  " +
                 "tournament = ?, goals_visit_team = ?, goals_local_team = ?, winner = ? WHERE id = ?")){
             if (exits(gameModel.getId())){
                 statement.setDate(1, gameModel.getDate());
-                statement.setString(2, gameModel.getTournament());
-                statement.setInt(3,gameModel.getGoalsVisitTeam());
-                statement.setInt(4, gameModel.getGoalsLocalTeam());
-                statement.setString(5, gameModel.getWinner());
-                statement.setInt(6,gameModel.getId());
+                statement.setTime(2, gameModel.getTime());
+                statement.setString(3, gameModel.getTournament());
+                statement.setInt(4,gameModel.getGoalsVisitTeam());
+                statement.setInt(5, gameModel.getGoalsLocalTeam());
+                statement.setString(6, gameModel.getWinner());
+                statement.setInt(7,gameModel.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
