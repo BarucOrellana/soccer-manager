@@ -125,6 +125,7 @@ public class GameRepository implements Repository<GameModel>{
         GameModel g = new GameModel();
         g.setId(resultSet.getInt("id"));
         g.setDate(resultSet.getDate("date"));
+        g.setTime(resultSet.getTime("time"));
         g.setVisitTeam(resultSet.getInt("visit_team_id"));
         g.setLocalTeam(resultSet.getInt("local_team_id"));
         g.setTournament(resultSet.getString("tournament"));
