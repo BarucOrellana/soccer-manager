@@ -249,6 +249,24 @@ public class Main {
             frameMain.setVisible(false);
 
             JFrame playersFrame = new JFrame("Jugadores");
+            playersFrame.setSize(800, 600);
+            playersFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            playersFrame.setLayout(new GridBagLayout());
+            GridBagConstraints gbcPlayers = new GridBagConstraints();
+            gbcPlayers.insets = new Insets(10, 10, 10, 10);
+            gbcPlayers.fill = GridBagConstraints.HORIZONTAL;
+
+            // Back button
+            JButton backButton = new JButton("Regresar a la pagina principal");
+            gbcPlayers.gridx = 1;
+            gbcPlayers.gridy = 1;
+            gbcPlayers.anchor = GridBagConstraints.CENTER;
+            playersFrame.add(backButton, gbcPlayers);
+
+            backButton.addActionListener(a->{
+                playersFrame.setVisible(false);
+                frameMain.setVisible(true);
+            });
 
             playersFrame.setVisible(true);
         });
@@ -256,9 +274,28 @@ public class Main {
         viewTeamsButton.addActionListener(e -> {
             frameMain.setVisible(false);
 
-            JFrame playersFrame = new JFrame("Jugadores");
+            JFrame teamsFrame = new JFrame("Equipos");
 
-            playersFrame.setVisible(true);
+            teamsFrame.setSize(800, 600);
+            teamsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            teamsFrame.setLayout(new GridBagLayout());
+            GridBagConstraints gbcTeams = new GridBagConstraints();
+            gbcTeams.insets = new Insets(10, 10, 10, 10);
+            gbcTeams.fill = GridBagConstraints.HORIZONTAL;
+
+            // Back button
+            JButton backButton = new JButton("Regresar a la pagina principal");
+            gbcTeams.gridx = 1;
+            gbcTeams.gridy = 1;
+            gbcTeams.anchor = GridBagConstraints.CENTER;
+            teamsFrame.add(backButton, gbcTeams);
+
+            backButton.addActionListener(a->{
+                teamsFrame.setVisible(false);
+                frameMain.setVisible(true);
+            });
+
+            teamsFrame.setVisible(true);
         });
 
         // Display the frame
