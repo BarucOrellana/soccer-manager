@@ -236,8 +236,6 @@ public class Main {
         });
 
         deleteButton.addActionListener(e -> {
-            JPanel deletePanel = new JPanel(new GridLayout(0, 2, 10, 10));
-
             int idGame = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el id del juego que deseas eliminar: "));
             boolean deleteStatus = gameRepository.delete(idGame);
             if (deleteStatus){
@@ -261,15 +259,25 @@ public class Main {
 
             // Back button
             JButton backButton = new JButton("Regresar a la pagina principal");
-            gbcPlayers.gridx = 1;
+            gbcPlayers.gridx = 0;
             gbcPlayers.gridy = 1;
-            gbcPlayers.anchor = GridBagConstraints.CENTER;
+            gbcPlayers.gridwidth=10;
             playersFrame.add(backButton, gbcPlayers);
 
             backButton.addActionListener(a -> {
                 playersFrame.setVisible(false);
                 frameMain.setVisible(true);
             });
+
+            JPanel searchPlayerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+
+            JButton searchPlayerBtn = new JButton("Buscar jugador");
+            gbcPlayers.gridx=0;
+            gbcPlayers.gridy=2;
+
+            searchPlayerPanel.add(searchPlayerBtn);
+
+            playersFrame.add(searchPlayerPanel, gbcPlayers);
 
             DefaultTableModel tablePlayersModel = new DefaultTableModel();
             JTable playersTable = new JTable(tablePlayersModel);
@@ -279,7 +287,7 @@ public class Main {
 
             JScrollPane scrollPlayers = new JScrollPane(playersTable);
             gbcPlayers.gridx = 0;
-            gbcPlayers.gridy = 2;
+            gbcPlayers.gridy = 3;
             gbcPlayers.gridwidth = 2;
             gbcPlayers.fill = GridBagConstraints.BOTH;
             gbcPlayers.weightx = 1.0;
@@ -303,6 +311,18 @@ public class Main {
                 row.add(player.getScore());
                 tablePlayersModel.addRow(row);
             }
+
+            searchPlayerBtn.addActionListener(a->{
+                int idPlayer = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el id del jugador: "));
+                if(playerRepository.exits(idPlayer)){
+                    PlayerModel player = playerRepository.getById(idPlayer);
+                    String text = "Nombre: "+ player.getName() + ", Edad: " + player.getAge() + ", Equipo: " + player.getTeam() +
+                    ", Goles: " +player.getScore();
+                    JOptionPane.showMessageDialog(null, text);
+                }else {
+                    JOptionPane.showMessageDialog(null, "Ingresa un id valido");
+                }
+            });
         });
 
         viewTeamsButton.addActionListener(e -> {
