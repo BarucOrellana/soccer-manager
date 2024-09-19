@@ -1,7 +1,9 @@
 package org.app;
 
 import org.app.model.GameModel;
+import org.app.model.PlayerModel;
 import org.app.persistence.GameRepository;
+import org.app.persistence.PlayerRepository;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -246,6 +248,7 @@ public class Main {
         });
 
         viewPlayersButton.addActionListener(e -> {
+            PlayerRepository playerRepository = new PlayerRepository();
             frameMain.setVisible(false);
 
             JFrame playersFrame = new JFrame("Jugadores");
@@ -263,12 +266,43 @@ public class Main {
             gbcPlayers.anchor = GridBagConstraints.CENTER;
             playersFrame.add(backButton, gbcPlayers);
 
-            backButton.addActionListener(a->{
+            backButton.addActionListener(a -> {
                 playersFrame.setVisible(false);
                 frameMain.setVisible(true);
             });
 
+            DefaultTableModel tablePlayersModel = new DefaultTableModel();
+            JTable playersTable = new JTable(tablePlayersModel);
+
+            String[] columnsPlayers = {"id", "nombre", "edad", "equipo", "goles"};
+            tablePlayersModel.setColumnIdentifiers(columnsPlayers);
+
+            JScrollPane scrollPlayers = new JScrollPane(playersTable);
+            gbcPlayers.gridx = 0;
+            gbcPlayers.gridy = 2;
+            gbcPlayers.gridwidth = 2;
+            gbcPlayers.fill = GridBagConstraints.BOTH;
+            gbcPlayers.weightx = 1.0;
+            gbcPlayers.weighty = 1.0;
+            playersFrame.add(scrollPlayers, gbcPlayers);
+
             playersFrame.setVisible(true);
+
+            tablePlayersModel.setRowCount(0);
+
+            // Retrieve data based on the date range
+            List<PlayerModel> players = playerRepository.findAll();
+
+            // Populate table with data
+            for (PlayerModel player : players) {
+                Vector<Object> row = new Vector<>();
+                row.add(player.getId());
+                row.add(player.getName());
+                row.add(player.getAge());
+                row.add(player.getTeam());
+                row.add(player.getScore());
+                tablePlayersModel.addRow(row);
+            }
         });
 
         viewTeamsButton.addActionListener(e -> {
