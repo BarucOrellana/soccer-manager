@@ -77,10 +77,15 @@ public class GameRepository implements Repository<GameModel>{
     }
 
     @Override
-    public void delete(Integer id) {
-        try(PreparedStatement statement = getConnection().prepareStatement("DELETE * FROM game WHERE id = ?")){
-            statement.setInt(1, id);
-            statement.executeUpdate();
+    public boolean delete(Integer id) {
+        try(PreparedStatement statement = getConnection().prepareStatement("DELETE FROM game WHERE id = ?")){
+            if(exits(id)){
+                statement.setInt(1, id);
+                statement.executeUpdate();
+                return true;
+            }else{
+                return false;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -75,10 +75,15 @@ public class PlayerRepository implements Repository<PlayerModel>{
     }
 
     @Override
-    public void delete(Integer id) {
-        try(PreparedStatement statement = getConnection().prepareStatement("DELETE * FROM player WHERE id = ?")){
-            statement.setInt(1, id);
-            statement.executeUpdate();
+    public boolean delete(Integer id) {
+        try(PreparedStatement statement = getConnection().prepareStatement("DELETE FROM player WHERE id = ?")){
+            if(exits(id)){
+                statement.setInt(1, id);
+                statement.executeUpdate();
+                return true;
+            }else {
+                return false;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

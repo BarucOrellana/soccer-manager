@@ -1,13 +1,10 @@
 package org.app.persistence;
 
-import org.app.model.GameModel;
-import org.app.model.PlayerModel;
 import org.app.model.TeamModel;
 import org.app.util.ConnectionManager;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class TeamRepository implements Repository<TeamModel>{
@@ -88,10 +85,15 @@ public class TeamRepository implements Repository<TeamModel>{
     }
 
     @Override
-    public void delete(Integer id) {
-        try(PreparedStatement statement = getConnection().prepareStatement("DELETE * FROM team WHERE id = ?")){
-            statement.setInt(1, id);
-            statement.executeUpdate();
+    public boolean delete(Integer id) {
+        try(PreparedStatement statement = getConnection().prepareStatement("DELETE FROM team WHERE id = ?")){
+            if(exits(id)){
+                statement.setInt(1, id);
+                statement.executeUpdate();
+                return true;
+            }else {
+                return false;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

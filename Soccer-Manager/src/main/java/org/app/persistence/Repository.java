@@ -7,6 +7,6 @@ public interface Repository<T> {
     T getById(Integer id);
     void save(T t);
     void update (T t);
-    void delete(Integer id);
+    boolean delete(Integer id);
     boolean exits(Integer id);
 }
