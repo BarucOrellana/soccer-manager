@@ -101,8 +101,8 @@ public class Main {
             java.util.Date initialDate = (java.util.Date) initialDateSpinner.getValue();
             java.util.Date finalDate = (java.util.Date) finalDateSpinner.getValue();
 
-            java.sql.Date initialDateSQL = new java.sql.Date(initialDate.getTime());
-            java.sql.Date finalDateSQL = new java.sql.Date(finalDate.getTime());
+            Date initialDateSQL = new Date(initialDate.getTime());
+            Date finalDateSQL = new Date(finalDate.getTime());
 
             // Clear previous table data
             tableModel.setRowCount(0);
@@ -234,16 +234,31 @@ public class Main {
         });
 
         deleteButton.addActionListener(e -> {
-            // Logic to delete the selected game
-            JOptionPane.showMessageDialog(frameMain, "Eliminar el juego seleccionado");
+            JPanel deletePanel = new JPanel(new GridLayout(0, 2, 10, 10));
+
+            int idGame = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el id del juego que deseas eliminar: "));
+            boolean deleteStatus = gameRepository.delete(idGame);
+            if (deleteStatus){
+                JOptionPane.showMessageDialog(null, "Juego eliminado con exito");
+            }else {
+                JOptionPane.showMessageDialog(null, "Error al eliminar juego, verifica el id ingresado");
+            }
         });
 
         viewPlayersButton.addActionListener(e -> {
-            // Logic to view players
+            frameMain.setVisible(false);
+
+            JFrame playersFrame = new JFrame("Jugadores");
+
+            playersFrame.setVisible(true);
         });
 
         viewTeamsButton.addActionListener(e -> {
-            // Logic to view teams
+            frameMain.setVisible(false);
+
+            JFrame playersFrame = new JFrame("Jugadores");
+
+            playersFrame.setVisible(true);
         });
 
         // Display the frame
