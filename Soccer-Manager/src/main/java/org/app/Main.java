@@ -189,8 +189,48 @@ public class Main {
         });
 
         editButton.addActionListener(e -> {
-            // Logic to edit the selected game
-            JOptionPane.showMessageDialog(frameMain, "Editar el juego seleccionado");
+            JPanel updatePanel = new JPanel(new GridLayout(0, 2, 10, 10));
+
+            updatePanel.add(new JLabel("Id del juego: "));
+            JTextField idInput = new JTextField();
+            updatePanel.add(idInput);
+
+            updatePanel.add(new JLabel("Goles equipo visitante: "));
+            JTextField  goalsVisitInput = new JTextField();
+            updatePanel.add(goalsVisitInput);
+
+            updatePanel.add(new JLabel("Goles equipo local: "));
+            JTextField goalsLocalInput = new JTextField();
+            updatePanel.add(goalsLocalInput);
+
+            updatePanel.add(new JLabel("Ganador: "));
+            JTextField winnerInput = new JTextField();
+            updatePanel.add(winnerInput);
+
+
+            int result = JOptionPane.showConfirmDialog(null, updatePanel,
+                    "Editar juego", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (result == JOptionPane.OK_OPTION) {
+                try {
+                    int id = Integer.parseInt(idInput.getText());
+                    int goalsVisit = Integer.parseInt(goalsVisitInput.getText());
+                    int goalsLocal = Integer.parseInt(goalsLocalInput.getText());
+                    String winner = winnerInput.getText();
+
+                    GameModel newGame = new GameModel();
+                    newGame.setId(id);
+                    newGame.setGoalsVisitTeam(goalsVisit);
+                    newGame.setGoalsLocalTeam(goalsLocal);
+                    newGame.setWinner(winner);
+
+                    gameRepository.update(newGame);
+                    String text = "Juego " + id + " editado con exito ";
+                    JOptionPane.showMessageDialog(null, text);
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(null, "Error al editar el juego. Verifica los datos ingresados.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
 
         deleteButton.addActionListener(e -> {
