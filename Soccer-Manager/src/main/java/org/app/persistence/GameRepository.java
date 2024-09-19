@@ -63,16 +63,12 @@ public class GameRepository implements Repository<GameModel>{
 
     @Override
     public void update(GameModel gameModel) {
-        try(PreparedStatement statement = getConnection().prepareStatement("UPDATE game SET date = ?, time = ?,  " +
-                "tournament = ?, goals_visit_team = ?, goals_local_team = ?, winner = ? WHERE id = ?")){
+        try(PreparedStatement statement = getConnection().prepareStatement("UPDATE game SET goals_visit_team = ?, goals_local_team = ?, winner = ? WHERE id = ?")){
             if (exits(gameModel.getId())){
-                statement.setDate(1, gameModel.getDate());
-                statement.setTime(2, gameModel.getTime());
-                statement.setString(3, gameModel.getTournament());
-                statement.setInt(4,gameModel.getGoalsVisitTeam());
-                statement.setInt(5, gameModel.getGoalsLocalTeam());
-                statement.setString(6, gameModel.getWinner());
-                statement.setInt(7,gameModel.getId());
+                statement.setInt(1,gameModel.getGoalsVisitTeam());
+                statement.setInt(2, gameModel.getGoalsLocalTeam());
+                statement.setString(3, gameModel.getWinner());
+                statement.setInt(4,gameModel.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
