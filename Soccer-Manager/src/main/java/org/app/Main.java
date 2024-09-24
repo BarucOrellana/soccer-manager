@@ -2,8 +2,10 @@ package org.app;
 
 import org.app.model.GameModel;
 import org.app.model.PlayerModel;
+import org.app.model.TeamModel;
 import org.app.persistence.GameRepository;
 import org.app.persistence.PlayerRepository;
+import org.app.persistence.TeamRepository;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -306,7 +308,6 @@ public class Main {
 
             tablePlayersModel.setRowCount(0);
 
-            // Retrieve data based on the date range
             List<PlayerModel> players = playerRepository.findAll();
 
             // Populate table with data
@@ -440,6 +441,7 @@ public class Main {
         });
 
         viewTeamsButton.addActionListener(e -> {
+            TeamRepository teamRepository = new TeamRepository();
             frameMain.setVisible(false);
 
             JFrame teamsFrame = new JFrame("Equipos");
@@ -453,15 +455,64 @@ public class Main {
 
             // Back button
             JButton backButton = new JButton("Regresar a la pagina principal");
-            gbcTeams.gridx = 1;
+            gbcTeams.gridx = 0;
             gbcTeams.gridy = 1;
-            gbcTeams.anchor = GridBagConstraints.CENTER;
+            gbcTeams.gridwidth=10;
             teamsFrame.add(backButton, gbcTeams);
 
             backButton.addActionListener(a->{
                 teamsFrame.setVisible(false);
                 frameMain.setVisible(true);
             });
+
+            JPanel actionTeamPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+
+            JButton searchTeamButton = new JButton("Buscar equipo");
+            JButton addTeamButton = new JButton("Agregar");
+            JButton updateTeamButton = new JButton("Editar");
+            JButton deleteTeamButton = new JButton("Eliminar");
+
+            actionTeamPanel.add(addTeamButton);
+            actionTeamPanel.add(updateTeamButton);
+            actionTeamPanel.add(deleteTeamButton);
+            actionTeamPanel.add(searchTeamButton);
+
+            gbcTeams.gridx = 0;
+            gbcTeams.gridy = 2;
+            gbcTeams.gridwidth = 2;
+
+            teamsFrame.add(actionTeamPanel, gbcTeams);
+
+            DefaultTableModel tableTeamsModel = new DefaultTableModel();
+            JTable teamsTable = new JTable(tableTeamsModel);
+
+            String[] columnsTeams = {"id", "nombre", "jugadores", "Goles en contra", "Goles a favor", "Puntos"};
+            tableTeamsModel.setColumnIdentifiers(columnsTeams);
+
+            JScrollPane scrollTeams = new JScrollPane(teamsTable);
+            gbcTeams.gridx = 0;
+            gbcTeams.gridy = 3;
+            gbcTeams.gridwidth = 2;
+            gbcTeams.fill = GridBagConstraints.BOTH;
+            gbcTeams.weightx = 1.0;
+            gbcTeams.weighty = 1.0;
+            teamsFrame.add(scrollTeams, gbcTeams);
+
+            tableTeamsModel.setRowCount(0);
+
+            List<TeamModel> teams = teamRepository.findAll();
+
+            // Populate table with data
+            for (TeamModel team : teams) {
+                Vector<Object> row = new Vector<>();
+                row.add(team.getId());
+                row.add(team.getName());
+                row.add(team.getPlayers());
+                row.add(team.getGoalsConceded());
+                row.add(team.getGoalsAgainst());
+                row.add(team.getPoints());
+                tableTeamsModel.addRow(row);
+            }
 
             teamsFrame.setVisible(true);
         });
