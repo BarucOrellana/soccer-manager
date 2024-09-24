@@ -514,6 +514,18 @@ public class Main {
                 tableTeamsModel.addRow(row);
             }
 
+            searchTeamButton.addActionListener(a->{
+                int idTeam = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el id del equipo: "));
+                if(teamRepository.exits(idTeam)){
+                    TeamModel team = teamRepository.getById(idTeam);
+                    String text = "Nombre: "+ team.getName() + ", Jugadores: " + team.getPlayers() + ", Goles en contra: " + team.getGoalsConceded() +
+                            ", Goles a favor: " +team.getGoalsAgainst() + ", Puntos: " + team.getPoints();
+                    JOptionPane.showMessageDialog(null, text);
+                }else {
+                    JOptionPane.showMessageDialog(null, "Ingresa un id valido");
+                }
+            });
+
             teamsFrame.setVisible(true);
         });
 
