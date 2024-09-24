@@ -526,6 +526,58 @@ public class Main {
                 }
             });
 
+            addTeamButton.addActionListener(a->{
+                JPanel addPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+
+                addPanel.add(new JLabel("Nombre: "));
+                JTextField nameInput = new JTextField();
+                addPanel.add(nameInput);
+
+                addPanel.add(new JLabel("Jugadores: "));
+                JTextField playersInput = new JTextField();
+                addPanel.add(playersInput);
+
+                addPanel.add(new JLabel("Goles en contra: "));
+                JTextField goalsConcededInput = new JTextField();
+                addPanel.add(goalsConcededInput);
+
+                addPanel.add(new JLabel("Goles a favor:"));
+                JTextField goalsAgainstInput = new JTextField();
+                addPanel.add(goalsAgainstInput);
+
+                addPanel.add(new JLabel("Puntos:"));
+                JTextField pointsInput = new JTextField();
+                addPanel.add(pointsInput);
+
+                int result = JOptionPane.showConfirmDialog(null, addPanel,
+                        "Agregar Nuevo Equipo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    try {
+                        String name = nameInput.getText();
+                        int players = Integer.parseInt(playersInput.getText());
+                        int goalsConceded = Integer.parseInt(goalsConcededInput.getText());
+                        int goalsAgainst = Integer.parseInt(goalsAgainstInput.getText());
+                        int points = Integer.parseInt(pointsInput.getText());
+
+                        TeamModel newTeam = new TeamModel();
+                        newTeam.setName(name);
+                        newTeam.setPlayers(players);
+                        newTeam.setGoalsConceded(goalsConceded);
+                        newTeam.setGoalsAgainst(goalsAgainst);
+                        newTeam.setPoints(points);
+
+                        teamRepository.save(newTeam);
+                        String text = "Nuevo equipo agregado, Nombre: " + name;
+                        JOptionPane.showMessageDialog(null, text);
+                    } catch (IllegalArgumentException ex) {
+                        JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Formato incorrecto", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, "Error al agregar el equipo. Verifica los datos ingresados.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
             teamsFrame.setVisible(true);
         });
 
