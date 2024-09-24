@@ -378,7 +378,57 @@ public class Main {
                 }
             });
 
-            
+            editPlayerButton.addActionListener(a -> {
+                JPanel updatePanel = new JPanel(new GridLayout(0, 2, 10, 10));
+
+                updatePanel.add(new JLabel("Id del jugador: "));
+                JTextField idInput = new JTextField();
+                updatePanel.add(idInput);
+
+                updatePanel.add(new JLabel("Nombre del jugador: "));
+                JTextField  nameInput = new JTextField();
+                updatePanel.add(nameInput);
+
+                updatePanel.add(new JLabel("Edad del jugador: "));
+                JTextField ageInput = new JTextField();
+                updatePanel.add(ageInput);
+
+                updatePanel.add(new JLabel("Equipo: "));
+                JTextField teamInput = new JTextField();
+                updatePanel.add(teamInput);
+
+                updatePanel.add(new JLabel("Goles: "));
+                JTextField scoreInput = new JTextField();
+                updatePanel.add(scoreInput);
+
+                int result = JOptionPane.showConfirmDialog(null, updatePanel,
+                        "Editar jugador", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    try {
+                        int id = Integer.parseInt(idInput.getText());
+                        String name = nameInput.getText();
+                        int age = Integer.parseInt(ageInput.getText());
+                        int team = Integer.parseInt(teamInput.getText());
+                        int score = Integer.parseInt(scoreInput.getText());
+
+                        PlayerModel newPlayer = new PlayerModel();
+                        newPlayer.setId(id);
+                        newPlayer.setName(name);
+                        newPlayer.setAge(age);
+                        newPlayer.setTeam(team);
+                        newPlayer.setScore(score);
+
+                        playerRepository.update(newPlayer);
+                        String text = "Jugador " + id + " editado con exito ";
+                        JOptionPane.showMessageDialog(null, text);
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, "Error al editar el jugador. Verifica los datos ingresados.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+
         });
 
         viewTeamsButton.addActionListener(e -> {
