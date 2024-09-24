@@ -269,15 +269,23 @@ public class Main {
                 frameMain.setVisible(true);
             });
 
-            JPanel searchPlayerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+            JPanel actionPlayerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 
-            JButton searchPlayerBtn = new JButton("Buscar jugador");
-            gbcPlayers.gridx=0;
-            gbcPlayers.gridy=2;
+            JButton searchPlayerButton = new JButton("Buscar jugador");
+            JButton addPlayerButton = new JButton("Agregar");
+            JButton editPlayerButton = new JButton("Editar");
+            JButton deletePlayerButton = new JButton("Eliminar");
 
-            searchPlayerPanel.add(searchPlayerBtn);
+            actionPlayerPanel.add(addPlayerButton);
+            actionPlayerPanel.add(editPlayerButton);
+            actionPlayerPanel.add(deletePlayerButton);
+            actionPlayerPanel.add(searchPlayerButton);
 
-            playersFrame.add(searchPlayerPanel, gbcPlayers);
+            gbcPlayers.gridx = 0;
+            gbcPlayers.gridy = 2;
+            gbcPlayers.gridwidth = 2;
+
+            playersFrame.add(actionPlayerPanel, gbcPlayers);
 
             DefaultTableModel tablePlayersModel = new DefaultTableModel();
             JTable playersTable = new JTable(tablePlayersModel);
@@ -312,7 +320,7 @@ public class Main {
                 tablePlayersModel.addRow(row);
             }
 
-            searchPlayerBtn.addActionListener(a->{
+            searchPlayerButton.addActionListener(a->{
                 int idPlayer = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el id del jugador: "));
                 if(playerRepository.exits(idPlayer)){
                     PlayerModel player = playerRepository.getById(idPlayer);
@@ -323,6 +331,54 @@ public class Main {
                     JOptionPane.showMessageDialog(null, "Ingresa un id valido");
                 }
             });
+
+            addPlayerButton.addActionListener(a -> {
+                JPanel addPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+
+                addPanel.add(new JLabel("Nombre: "));
+                JTextField nameInput = new JTextField();
+                addPanel.add(nameInput);
+
+                addPanel.add(new JLabel("Edad: "));
+                JTextField ageInput = new JTextField();
+                addPanel.add(ageInput);
+
+                addPanel.add(new JLabel("Equipo: "));
+                JTextField teamInput = new JTextField();
+                addPanel.add(teamInput);
+
+                addPanel.add(new JLabel("Total de goles:"));
+                JTextField scoreInput = new JTextField();
+                addPanel.add(scoreInput);
+
+                int result = JOptionPane.showConfirmDialog(null, addPanel,
+                        "Agregar Nuevo Jugador", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    try {
+                        String name = nameInput.getText();
+                        int age = Integer.parseInt(ageInput.getText());
+                        int team = Integer.parseInt(teamInput.getText());
+                        int score = Integer.parseInt(scoreInput.getText());
+
+                        PlayerModel newPlayer = new PlayerModel();
+                        newPlayer.setName(name);
+                        newPlayer.setAge(age);
+                        newPlayer.setTeam(team);
+                        newPlayer.setScore(score);
+
+                        playerRepository.save(newPlayer);
+                        String text = "Nuevo jugador agregado, Nombre: " + name + " Edad: " + age + " Equipo: " + team;
+                        JOptionPane.showMessageDialog(null, text);
+                    } catch (IllegalArgumentException ex) {
+                        JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Formato incorrecto", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, "Error al agregar el jugador. Verifica los datos ingresados.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            
         });
 
         viewTeamsButton.addActionListener(e -> {
