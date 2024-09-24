@@ -58,12 +58,11 @@ public class TeamRepository implements Repository<TeamModel>{
 
     @Override
     public void update(TeamModel teamModel) {
-        try(PreparedStatement statement = getConnection().prepareStatement("UPDATE team SET name = ?, players = ?, points = ? WHERE id = ?")){
+        try(PreparedStatement statement = getConnection().prepareStatement("UPDATE team SET players = ?, points = ? WHERE id = ?")){
             if (exits(teamModel.getId())){
-                statement.setString(1, teamModel.getName());
-                statement.setInt(2, teamModel.getPlayers());
-                statement.setInt(3, teamModel.getPoints());
-                statement.setInt(4, teamModel.getId());
+                statement.setInt(1, teamModel.getPlayers());
+                statement.setInt(2, teamModel.getPoints());
+                statement.setInt(3, teamModel.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
