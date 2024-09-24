@@ -428,7 +428,15 @@ public class Main {
                 }
             });
 
-
+            deletePlayerButton.addActionListener(a -> {
+                int idPlayer = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el id del jugador que deseas eliminar: "));
+                boolean deleteStatus = playerRepository.delete(idPlayer);
+                if (deleteStatus){
+                    JOptionPane.showMessageDialog(null, "Jugador eliminado con exito");
+                }else {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar jugador, verifica el id ingresado");
+                }
+            });
         });
 
         viewTeamsButton.addActionListener(e -> {
