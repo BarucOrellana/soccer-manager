@@ -92,9 +92,21 @@ public class TeamRepository implements Repository<TeamModel>{
             }
         }catch (SQLException e){
             throw  new RuntimeException();
-            }
         }
-        @Override
+    }
+
+    public void updatePlayers(int id){
+        try(PreparedStatement statement = getConnection().prepareStatement("UPDATE team SET players = players + 1 " +
+                "WHERE id = ?")){
+            if (exits(id)) {
+                statement.setInt(1, id);
+                statement.executeUpdate();
+            }
+        }catch (SQLException e){
+            throw  new RuntimeException();
+        }
+    }
+    @Override
     public boolean delete(Integer id) {
         try(PreparedStatement statement = getConnection().prepareStatement("DELETE FROM team WHERE id = ?")){
             if(exits(id)){

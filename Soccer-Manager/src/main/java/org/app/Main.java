@@ -364,6 +364,7 @@ public class Main {
             });
 
             addPlayerButton.addActionListener(a -> {
+                TeamRepository teamRepository = new TeamRepository();
                 JPanel addPanel = new JPanel(new GridLayout(0, 2, 10, 10));
 
                 addPanel.add(new JLabel("Nombre: "));
@@ -391,6 +392,9 @@ public class Main {
                         int age = Integer.parseInt(ageInput.getText());
                         int team = Integer.parseInt(teamInput.getText());
                         int score = Integer.parseInt(scoreInput.getText());
+
+                        //Update players dynamically
+                        teamRepository.updatePlayers(team);
 
                         PlayerModel newPlayer = new PlayerModel();
                         newPlayer.setName(name);
