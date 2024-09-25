@@ -70,7 +70,7 @@ public class TeamRepository implements Repository<TeamModel>{
         }
     }
     public void updateGoals(int goals_conceded, int goals_against, int id){
-        try (PreparedStatement statement = getConnection().prepareStatement("UPDATE team SET goals_conceded = ?, goals_against = ? " +
+        try (PreparedStatement statement = getConnection().prepareStatement("UPDATE team SET goals_conceded = goals_conceded + ?, goals_against = goals_against + ? " +
                 "WHERE id = ?")){
             if (exits(id)){
                 statement.setInt(1, goals_conceded);

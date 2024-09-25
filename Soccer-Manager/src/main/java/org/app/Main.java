@@ -193,6 +193,7 @@ public class Main {
         });
 
         editButton.addActionListener(e -> {
+            TeamRepository teamRepository = new TeamRepository();
             JPanel updatePanel = new JPanel(new GridLayout(0, 2, 10, 10));
 
             updatePanel.add(new JLabel("Id del juego: "));
@@ -221,6 +222,18 @@ public class Main {
                     int goalsVisit = Integer.parseInt(goalsVisitInput.getText());
                     int goalsLocal = Integer.parseInt(goalsLocalInput.getText());
                     String winner = winnerInput.getText();
+
+                    if (goalsVisit > 0 ){
+                        GameModel gameModel = gameRepository.getById(id);
+                        int idTeam = gameModel.getVisitTeam();
+                        teamRepository.updateGoals(goalsLocal, goalsVisit, idTeam);
+                    }
+
+                    if (goalsLocal > 0 ){
+                        GameModel gameModel = gameRepository.getById(id);
+                        int idTeam = gameModel.getLocalTeam();
+                        teamRepository.updateGoals(goalsVisit, goalsLocal, idTeam);
+                    }
 
                     GameModel newGame = new GameModel();
                     newGame.setId(id);
