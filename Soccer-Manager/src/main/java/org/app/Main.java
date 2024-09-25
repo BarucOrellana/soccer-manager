@@ -223,12 +223,29 @@ public class Main {
                     int goalsLocal = Integer.parseInt(goalsLocalInput.getText());
                     String winner = winnerInput.getText();
 
+                    //Update point dynamically
+                    GameModel game = gameRepository.getById(id);
+                    TeamModel localTeam = teamRepository.getById(game.getLocalTeam());
+                    TeamModel visitTeam = teamRepository.getById(game.getVisitTeam());
+
+                    if (goalsLocal > goalsVisit){
+                        teamRepository.updatePoints(localTeam.getId(), 3);
+                    }
+                    if(goalsVisit > goalsLocal){
+                        teamRepository.updatePoints(visitTeam.getId(), 3);
+                    }
+                    if (goalsVisit == goalsLocal){
+                        teamRepository.updatePoints(localTeam.getId(), 1);
+                        teamRepository.updatePoints(visitTeam.getId(), 1);
+                    }
+
+                    //Update score dynamically
                     if (goalsVisit > 0 ){
                         GameModel gameModel = gameRepository.getById(id);
                         int idTeam = gameModel.getVisitTeam();
                         teamRepository.updateGoals(goalsLocal, goalsVisit, idTeam);
                     }
-
+                    //Update score dynamically
                     if (goalsLocal > 0 ){
                         GameModel gameModel = gameRepository.getById(id);
                         int idTeam = gameModel.getLocalTeam();
@@ -602,10 +619,6 @@ public class Main {
                 JTextField  playersInput = new JTextField();
                 updatePanel.add(playersInput);
 
-                updatePanel.add(new JLabel("Puntos: "));
-                JTextField pointsInput = new JTextField();
-                updatePanel.add(pointsInput);
-
                 int result = JOptionPane.showConfirmDialog(null, updatePanel,
                         "Editar equipo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
@@ -613,12 +626,10 @@ public class Main {
                     try {
                         int id = Integer.parseInt(idInput.getText());
                         int players = Integer.parseInt(playersInput.getText());
-                        int points = Integer.parseInt(pointsInput.getText());
 
                         TeamModel newTeam = new TeamModel();
                         newTeam.setId(id);
                         newTeam.setPlayers(players);
-                        newTeam.setPoints(points);
 
                         teamRepository.update(newTeam);
                         String text = "Equipo " + id + " editado con exito ";

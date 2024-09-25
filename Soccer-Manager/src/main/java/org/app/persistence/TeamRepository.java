@@ -58,11 +58,10 @@ public class TeamRepository implements Repository<TeamModel>{
 
     @Override
     public void update(TeamModel teamModel) {
-        try(PreparedStatement statement = getConnection().prepareStatement("UPDATE team SET players = ?, points = ? WHERE id = ?")){
+        try(PreparedStatement statement = getConnection().prepareStatement("UPDATE team SET players = ? WHERE id = ?")){
             if (exits(teamModel.getId())){
                 statement.setInt(1, teamModel.getPlayers());
-                statement.setInt(2, teamModel.getPoints());
-                statement.setInt(3, teamModel.getId());
+                statement.setInt(2, teamModel.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -83,7 +82,19 @@ public class TeamRepository implements Repository<TeamModel>{
         }
     }
 
-    @Override
+    public void updatePoints(int id, int points){
+        try(PreparedStatement statement = getConnection().prepareStatement("UPDATE team SET points = points + ? " +
+                "WHERE id = ?")){
+            if (exits(id)) {
+                statement.setInt(1, points);
+                statement.setInt(2, id);
+                statement.executeUpdate();
+            }
+        }catch (SQLException e){
+            throw  new RuntimeException();
+            }
+        }
+        @Override
     public boolean delete(Integer id) {
         try(PreparedStatement statement = getConnection().prepareStatement("DELETE FROM team WHERE id = ?")){
             if(exits(id)){
