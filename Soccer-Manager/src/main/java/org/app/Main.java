@@ -102,6 +102,7 @@ public class Main {
 
         // Action listener for the search button
         buttonSearch.addActionListener(e -> {
+            TeamRepository teamRepository = new TeamRepository();
             java.util.Date initialDate = (java.util.Date) initialDateSpinner.getValue();
             java.util.Date finalDate = (java.util.Date) finalDateSpinner.getValue();
 
@@ -116,12 +117,14 @@ public class Main {
 
             // Populate table with data
             for (GameModel game : games) {
+                TeamModel localTeam = teamRepository.getById(game.getLocalTeam());
+                TeamModel visitTeam = teamRepository.getById(game.getVisitTeam());
                 Vector<Object> row = new Vector<>();
                 row.add(game.getId());
                 row.add(game.getDate());
                 row.add(game.getTime());
-                row.add(game.getVisitTeam());
-                row.add(game.getLocalTeam());
+                row.add(visitTeam.getName());
+                row.add(localTeam.getName());
                 row.add(game.getTournament());
                 row.add(game.getGoalsVisitTeam());
                 row.add(game.getGoalsLocalTeam());
