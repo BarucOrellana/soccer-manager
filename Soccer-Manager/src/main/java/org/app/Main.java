@@ -615,7 +615,17 @@ public class Main {
                     }
                 }
             });
-            
+
+            deleteTeamButton.addActionListener(a->{
+                int idTeam = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el id del equipo que deseas eliminar: "));
+                boolean deleteStatus = teamRepository.delete(idTeam);
+                if (deleteStatus){
+                    JOptionPane.showMessageDialog(null, "Equipo eliminado con exito");
+                }else {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar equipo, verifica el id ingresado");
+                }
+            });
+
             teamsFrame.setVisible(true);
         });
 
