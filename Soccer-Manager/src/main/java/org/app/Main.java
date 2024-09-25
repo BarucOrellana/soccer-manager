@@ -578,6 +578,44 @@ public class Main {
                 }
             });
 
+            updateTeamButton.addActionListener(a->{
+                JPanel updatePanel = new JPanel(new GridLayout(0, 2, 10, 10));
+
+                updatePanel.add(new JLabel("Id del equipo: "));
+                JTextField idInput = new JTextField();
+                updatePanel.add(idInput);
+
+                updatePanel.add(new JLabel("Jugadores: "));
+                JTextField  playersInput = new JTextField();
+                updatePanel.add(playersInput);
+
+                updatePanel.add(new JLabel("Puntos: "));
+                JTextField pointsInput = new JTextField();
+                updatePanel.add(pointsInput);
+
+                int result = JOptionPane.showConfirmDialog(null, updatePanel,
+                        "Editar equipo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    try {
+                        int id = Integer.parseInt(idInput.getText());
+                        int players = Integer.parseInt(playersInput.getText());
+                        int points = Integer.parseInt(pointsInput.getText());
+
+                        TeamModel newTeam = new TeamModel();
+                        newTeam.setId(id);
+                        newTeam.setPlayers(players);
+                        newTeam.setPoints(points);
+
+                        teamRepository.update(newTeam);
+                        String text = "Equipo " + id + " editado con exito ";
+                        JOptionPane.showMessageDialog(null, text);
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, "Error al editar el equipo. Verifica los datos ingresados.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+            
             teamsFrame.setVisible(true);
         });
 
