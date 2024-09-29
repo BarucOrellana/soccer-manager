@@ -281,6 +281,7 @@ public class Main {
         });
 
         viewPlayersButton.addActionListener(e -> {
+            TeamRepository teamRepository = new TeamRepository();
             PlayerRepository playerRepository = new PlayerRepository();
             frameMain.setVisible(false);
 
@@ -345,11 +346,12 @@ public class Main {
 
             // Populate table with data
             for (PlayerModel player : players) {
+                TeamModel team = teamRepository.getById(player.getTeam());
                 Vector<Object> row = new Vector<>();
                 row.add(player.getId());
                 row.add(player.getName());
                 row.add(player.getAge());
-                row.add(player.getTeam());
+                row.add(team.getName());
                 row.add(player.getScore());
                 tablePlayersModel.addRow(row);
             }
@@ -367,7 +369,6 @@ public class Main {
             });
 
             addPlayerButton.addActionListener(a -> {
-                TeamRepository teamRepository = new TeamRepository();
                 JPanel addPanel = new JPanel(new GridLayout(0, 2, 10, 10));
 
                 addPanel.add(new JLabel("Nombre: "));
