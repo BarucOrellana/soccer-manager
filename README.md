@@ -33,8 +33,7 @@ Cada juego cuenta con atributos que le permiten al usuario identificarlo y prese
 El usuario también puede administrar la información de los jugadores y de sus equipos, utilizando los botones de navegación puede acceder a los paneles que le permitirán agregar, visualizar, editar o eliminar información.
 
 *Panel de jugadores*
-![image](https://github.com/user-attachments/assets/61500580-5a5c-4925-9780-b3e02487c456)
-
+![image](https://github.com/user-attachments/assets/db343f43-5178-424a-96f0-7becbcb2e10a)
 
 *Panel de equipos*
 ![image](https://github.com/user-attachments/assets/9f39c00f-e80f-4811-8271-d697f97ab36a)
