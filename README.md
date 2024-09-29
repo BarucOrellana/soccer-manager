@@ -9,7 +9,7 @@ sin embargo, en todas las ocasiones había errores o la tabla estaba desactualiz
 
 <li>Java: 11 </li>
 <li>Lombok: 1.18.30 </li>
-<li>Mysql-connector-java: 8.0.33</li>
+<li>Mysql-connector-j: 9.0.0</li>
 
 ## Uso de la aplicación
 
