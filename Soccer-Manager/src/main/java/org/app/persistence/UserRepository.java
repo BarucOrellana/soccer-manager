@@ -12,10 +12,12 @@ public class UserRepository {
     }
 
     public void createAccount(String username, String password) {
-        UserModel user = queryUserData(username);
-        if(!user.getUsername().isEmpty()){
-            System.out.println("El usuario ya existe");
-        }else {
+        try{
+            UserModel user = queryUserData(username);
+            if(user.getUsername().equals(username)){
+                throw new RuntimeException("El usuario ya existe");
+            }
+        }catch (NullPointerException e){
             LocalDate date = LocalDate.now();
             try(PreparedStatement statement = getConnection().prepareStatement("INSERT INTO user (username, password, granted_date) VALUES(?,?,?)")){
                 statement.setString(1, username);
